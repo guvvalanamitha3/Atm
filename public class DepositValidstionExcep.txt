@@ -1,0 +1,122 @@
+public class DepositValidstionException extends Exception {
+	
+	public DepositValidstionException(String message)
+	{
+		super(message);
+	}
+}
+public class FundValidationException extends Exception
+{
+	 public FundValidationException(String message)
+	 {
+		 super(message);
+	 }
+}
+public class LoginValidationException extends Exception
+{
+	public LoginValidationException(String message)
+	{
+		super(message);
+	}
+	
+}
+public interface AtmInterface 
+{
+	void login() throws LoginValidationException;
+	void withDraw() throws FundValidationException;
+	void deposit() throws DepositValidstionException;
+	void balance();
+}
+import java.util.Scanner;
+ public class Atm implements AtmInterface
+ {
+	  static long customerAccountNumber=10264862L;
+	  static String customerName="Namitha";
+	 double totalAmount;
+	 public Atm(double totalAmount)
+	 {
+		 this.totalAmount=totalAmount;
+	 }
+	 @Override
+		public void login() throws LoginValidationException
+		{
+			Scanner sc=new Scanner(System.in);
+			System.out.println("Enter User Name:");
+			String userName=sc.nextLine();
+			System.out.println("Enter User Password");
+			String userPassWord=sc.nextLine();
+			if(userName.equals("abc@gmail.com") && userPassWord.equals("abc@3"))
+			{
+				System.out.println("Login Successfull");
+			}
+			else
+			{				
+						throw new LoginValidationException("Invalid login");
+			}
+									
+		}
+                public void withDraw() throws FundValidationException {
+			Scanner sc=new Scanner(System.in);
+	        System.out.println("enter withdraw amount:");
+	        int withDrawAmount=sc.nextInt();
+	        if(withDrawAmount<totalAmount)
+	        {
+	            totalAmount=totalAmount-withDrawAmount;
+	            System.out.println("After withdraw total amount is "+totalAmount);
+	        }
+	        else
+	        {
+	            throw new FundValidationException("invalid sufficent amount");
+	        }
+			
+		}
+		public void deposit() throws DepositValidstionException {
+			Scanner sc=new Scanner(System.in);
+	        System.out.println("enter Deposit amount:");
+	        int depositAmount=sc.nextInt();
+	        if(depositAmount<=10000)
+	        {
+	            totalAmount=totalAmount+depositAmount;
+	            System.out.println("After deposit total amount is "+totalAmount);
+	        }
+	        else
+	        {
+	        	throw new DepositValidstionException("Invalid deposit amount");
+	        }
+		}
+
+		public void balance() 
+		{
+			System.out.println("Balance is"+totalAmount);
+			
+		}
+		
+ }
+import java.util.Scanner;
+
+public class AtmMain 
+{
+	public static void main(String[] args)throws Exception
+    {
+        Scanner sc=new Scanner(System.in);
+        Atm a=new Atm(10000);
+        a.login();
+        System.out.println("Customer name:"+Atm.customerName);
+        System.out.println("Customer Account Number:"+Atm.customerAccountNumber);       
+        System.out.println("enter 1 for withdraw");
+        System.out.println("enter 2 for deposit");
+        System.out.println("enter 3 for balance");
+        int operation=sc.nextInt();
+        switch(operation)
+        {
+            case 1:a.withDraw();
+            break;
+            case 2:a.deposit();
+            break;
+            case 3:a.balance();
+            break;
+            default:System.out.println("Invalid operation");
+        }
+    } 
+
+}
